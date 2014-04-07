@@ -6,7 +6,6 @@
 *.clj		diff text ident
 *.c		diff text ident
 *.h		diff text ident
-*.xml		diff text ident
 *.html		diff text ident
 .project	diff text ident
 .classpath	diff text ident

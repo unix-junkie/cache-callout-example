@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25" zv="Cache for UNIX (Apple Mac OS X for x86-64) 2012.1 (Build 564U)" ts="2012-05-22 15:41:58">
-<Class name="WRC770936.TestCase">
+<Class name="com.intersystems.CalloutTestCase">
 <TimeChanged>62599,56250.628168</TimeChanged>
 <TimeCreated>62575,69373.365076</TimeCreated>
 
@@ -18,7 +18,7 @@
 ]]></Implementation>
 </Method>
 
-<Method name="findStringLengthLimit">
+<Method name="FindStringLengthLimit">
 <ClassMethod>1</ClassMethod>
 <FormalSpec>fileName:%String,function:%String</FormalSpec>
 <ReturnType>%Integer</ReturnType>
@@ -60,7 +60,7 @@
 ]]></Implementation>
 </Method>
 
-<Method name="testStringLengthSupported">
+<Method name="TestStringLengthSupported">
 <ClassMethod>1</ClassMethod>
 <FormalSpec>fileName:%String,function:%String,length:%Integer</FormalSpec>
 <ReturnType>%Boolean</ReturnType>
@@ -91,33 +91,33 @@
 ]]></Implementation>
 </Method>
 
-<Method name="main">
+<Method name="Main">
 <ClassMethod>1</ClassMethod>
 <Implementation><![CDATA[
-	#dim dir as %String = "/Users/ashcheglov/Documents/wrc/770936"
-	#dim bundle as %String = dir _ "/" _ "lib770936-callout.bundle"
-	#dim dylib as %String = dir _ "/" _ "lib770936-callout.dylib"
+	#dim dir as %String = "/Users/ashcheglov/docs/programming/c/test-callout"
+	#dim bundle as %String = dir _ "/" _ "libtest-callout.bundle"
+	#dim dylib as %String = dir _ "/" _ "libtest-callout.dylib"
 
-	d ..findStringLengthLimit(bundle, "strlen")
+	d ..FindStringLengthLimit(bundle, "strlen")
 
-	d ..findStringLengthLimit(dylib, "strlen")
-	d ..findStringLengthLimit(dylib, "strlen_w")
-	d ..findStringLengthLimit(dylib, "strlen_s")
+	d ..FindStringLengthLimit(dylib, "strlen")
+	d ..FindStringLengthLimit(dylib, "strlen_w")
+	d ..FindStringLengthLimit(dylib, "strlen_s")
 
 	#dim length as %Integer = 3641144 ; CACHE_MAXLOSTSZ
 
 	; Regular strings
-	w ..testStringLengthSupported(dylib, "strlen", length), !
-	w ..testStringLengthSupported(dylib, "strlen_w", length), !
-	w ..testStringLengthSupported(dylib, "strlen_s", length), !
+	w ..TestStringLengthSupported(dylib, "strlen", length), !
+	w ..TestStringLengthSupported(dylib, "strlen_w", length), !
+	w ..TestStringLengthSupported(dylib, "strlen_s", length), !
 	
 	; Long strings
-	w ..testStringLengthSupported(dylib, "strlen_j", length), !
+	w ..TestStringLengthSupported(dylib, "strlen_j", length), !
 	; This one (DTLSTR) triggers a <SYSTEM> error at 
 	; $Id: //dev/2012.1.0/kernel/common/src/lost.c#1 $ 259 2
-	;;w ..testStringLengthSupported(dylib, "strlen_m", length), !
-	w ..testStringLengthSupported(dylib, "strlen_n", length), !
-	w ..testStringLengthSupported(dylib, "strlen_r", length), !
+	;;w ..TestStringLengthSupported(dylib, "strlen_m", length), !
+	w ..TestStringLengthSupported(dylib, "strlen_n", length), !
+	w ..TestStringLengthSupported(dylib, "strlen_r", length), !
 ]]></Implementation>
 </Method>
 </Class>
