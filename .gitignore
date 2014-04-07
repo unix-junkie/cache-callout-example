@@ -1,5 +1,12 @@
 *.o
 *.dylib
 *.so
+*.bundle
+*.exe
+*.dll
 .project
 .cproject
+.pmd
+.settings
+770936
+770936-dlopen
