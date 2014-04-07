@@ -4,7 +4,7 @@
 
 #include <string.h>
 
-#include "770936-callout.h"
+#include "test-callout.h"
 
 int strlen_c_callout(const char *s, size_t *length) {
 	*length = strlen(s);

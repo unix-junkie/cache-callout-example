@@ -8,6 +8,6 @@
 .cproject
 .pmd
 .settings
-770936
-770936-dlopen
+test-callout-dynamic
+test-callout-dlopen
 *.swp

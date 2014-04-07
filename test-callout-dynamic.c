@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "770936-callout.h"
+#include "test-callout.h"
 
 size_t strlen_w(const unsigned short *s) {
 	size_t length = 0;

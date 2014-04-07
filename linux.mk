@@ -13,17 +13,17 @@ CFLAGS = -Wall -Wextra -g
 CPPFLAGS = -I${GLOBALS_HOME}/dev/cpp/include
 
 .PHONY: all
-all: 770936 770936-dlopen
+all: test-callout-dynamic test-callout-dlopen
 
-lib770936-callout.so: 770936-callout.o
+libtest-callout.so: test-callout.o
 	$(CC) -shared -o $@ $<
 
-770936: 770936.o lib770936-callout.so
-	$(CC) -L. -l770936-callout -o $@ $<
+test-callout-dynamic: test-callout-dynamic.o libtest-callout.so
+	$(CC) -L. -ltest-callout -o $@ $<
 
-770936-dlopen: 770936-dlopen.o
+test-callout-dlopen: test-callout-dlopen.o
 	$(CC) -o $@ $<
 
 .PHONY: clean
 clean:
-	$(RM) *.o *.so 770936 770936-dlopen
+	$(RM) *.o *.so test-callout-dynamic test-callout-dlopen

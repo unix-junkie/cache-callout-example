@@ -9,7 +9,7 @@
 #include <dlfcn.h>
 
 int main (const int argc, const char *argv[]) {
-	void *handle = dlopen("/Users/ashcheglov/docs/programming/c/test-callout/lib770936-callout.dylib", RTLD_NOW);
+	void *handle = dlopen("/Users/ashcheglov/docs/programming/c/test-callout/libtest-callout.dylib", RTLD_NOW);
 	if (!handle) {
 		printf("%s\n", dlerror());
 		return 1;

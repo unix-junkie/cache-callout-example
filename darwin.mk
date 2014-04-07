@@ -13,21 +13,21 @@ CFLAGS = -Wall -Wextra -g
 CPPFLAGS = -I${GLOBALS_HOME}/dev/cpp/include
 
 .PHONY: all
-all: lib770936-callout.bundle 770936 770936-dlopen
+all: libtest-callout.bundle test-callout-dynamic test-callout-dlopen
 
-lib770936-callout.dylib: 770936-callout.o
+libtest-callout.dylib: test-callout.o
 	$(CC) -dynamiclib -o $@ $<
 
-lib770936-callout.bundle: 770936-callout.o
+libtest-callout.bundle: test-callout.o
 	$(CC) -bundle -o $@ $<
 
-770936: 770936.o lib770936-callout.dylib
-	$(CC) -L. -l770936-callout -o $@ $<
-	install_name_tool -change lib770936-callout.dylib @executable_path/lib770936-callout.dylib $@
+test-callout-dynamic: test-callout-dynamic.o libtest-callout.dylib
+	$(CC) -L. -ltest-callout -o $@ $<
+	install_name_tool -change libtest-callout.dylib @executable_path/libtest-callout.dylib $@
 
-770936-dlopen: 770936-dlopen.o
+test-callout-dlopen: test-callout-dlopen.o
 	$(CC) -o $@ $<
 
 .PHONY: clean
 clean:
-	$(RM) *.o *.so *.dylib *.bundle 770936 770936-dlopen
+	$(RM) *.o *.so *.dylib *.bundle test-callout-dynamic test-callout-dlopen
