@@ -16,7 +16,7 @@ CPPFLAGS = -I${GLOBALS_HOME}/dev/cpp/include
 all: 770936 770936-dlopen
 
 lib770936-callout.so: 770936-callout.o
-	$(CC) -dynamiclib -o $@ $<
+	$(CC) -shared -o $@ $<
 
 770936: 770936.o lib770936-callout.so
 	$(CC) -L. -l770936-callout -o $@ $<
