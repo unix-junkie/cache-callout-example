@@ -1,0 +1,5 @@
+*.o
+*.dylib
+*.so
+.project
+.cproject

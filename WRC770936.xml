@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25" zv="Cache for UNIX (Apple Mac OS X for x86-64) 2012.1 (Build 564U)" ts="2012-05-22 15:41:58">
+<Class name="WRC770936.TestCase">
+<TimeChanged>62599,56250.628168</TimeChanged>
+<TimeCreated>62575,69373.365076</TimeCreated>
+
+<Method name="newString">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>length:%Integer</FormalSpec>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[
+	#dim s as %String = ""
+	#dim i as %Integer
+	f i = 1:1:length {
+		s s = s _ "A"
+	}
+	q s
+]]></Implementation>
+</Method>
+
+<Method name="findStringLengthLimit">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>fileName:%String,function:%String</FormalSpec>
+<ReturnType>%Integer</ReturnType>
+<Implementation><![CDATA[
+	#dim dllId as %Integer
+	#dim funcId as %Integer
+	#dim e as %Exception.SystemException
+	if (##class(%File).Exists(fileName)) {
+		s dllId = $zf(-4, 1, fileName)
+		s funcId = $zf(-4, 3, dllId, function)
+		#dim length as %Integer
+		#dim j as %Integer = 32767 ; CACHE_MAXSTRLEN
+		try {
+			f {
+				s length = $zf(-5, dllId, funcId, ..newString(j))
+				i (length '= j) {
+					; For ZWARRAYP, maximum length is 65535 (unsigned short).
+					; From Cache perspective, a "rollover" of ZWARRAYP->len will occur.
+					s j = j - 1 ; decrement j
+					s length = j ; revert length from 0 to the previous value
+					q ; quit the for-loop
+				}
+				s j = $i(j)
+			}
+		} catch (e) {
+			if ($p($p($ze, ">", 1), "<", 2) '= "OUT OF $ZF HEAP SPACE") {
+				w e.DisplayString(), !
+				w $zu(56, 2), !
+			} else {
+				s j = j - 1 ; decrement j
+			}
+		}
+		w "Maximum string length for ", function, "() is ", length, !
+		q length
+	} else {
+		w fileName, ": no such file or directory", !
+		q 0
+	}
+]]></Implementation>
+</Method>
+
+<Method name="testStringLengthSupported">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>fileName:%String,function:%String,length:%Integer</FormalSpec>
+<ReturnType>%Boolean</ReturnType>
+<Implementation><![CDATA[
+	#dim dllId as %Integer
+	#dim funcId as %Integer
+	if (##class(%File).Exists(fileName)) {
+		s dllId = $zf(-4, 1, fileName)
+		try {
+			s funcId = $zf(-4, 3, dllId, function)
+		} catch {
+			w $ze, !
+			w $zu(56, 2), !
+		}
+		#dim lengthReturned as %Integer = 0
+		try {
+			s lengthReturned = $zf(-5, dllId, funcId, ..newString(length))
+		} catch {
+			w $ze, !
+			w $zu(56, 2), !
+		}
+		; return true if lengthReturned == j, false otherwise
+		q $select(lengthReturned = length: 1, 1: 0)
+	} else {
+		w fileName, ": no such file or directory", !
+		q 0
+	}
+]]></Implementation>
+</Method>
+
+<Method name="main">
+<ClassMethod>1</ClassMethod>
+<Implementation><![CDATA[
+	#dim dir as %String = "/Users/ashcheglov/Documents/wrc/770936"
+	#dim bundle as %String = dir _ "/" _ "lib770936-callout.bundle"
+	#dim dylib as %String = dir _ "/" _ "lib770936-callout.dylib"
+
+	d ..findStringLengthLimit(bundle, "strlen")
+
+	d ..findStringLengthLimit(dylib, "strlen")
+	d ..findStringLengthLimit(dylib, "strlen_w")
+	d ..findStringLengthLimit(dylib, "strlen_s")
+
+	#dim length as %Integer = 3641144 ; CACHE_MAXLOSTSZ
+
+	; Regular strings
+	w ..testStringLengthSupported(dylib, "strlen", length), !
+	w ..testStringLengthSupported(dylib, "strlen_w", length), !
+	w ..testStringLengthSupported(dylib, "strlen_s", length), !
+	
+	; Long strings
+	w ..testStringLengthSupported(dylib, "strlen_j", length), !
+	; This one (DTLSTR) triggers a <SYSTEM> error at 
+	; $Id: //dev/2012.1.0/kernel/common/src/lost.c#1 $ 259 2
+	;;w ..testStringLengthSupported(dylib, "strlen_m", length), !
+	w ..testStringLengthSupported(dylib, "strlen_n", length), !
+	w ..testStringLengthSupported(dylib, "strlen_r", length), !
+]]></Implementation>
+</Method>
+</Class>
+
+
+</Export>
