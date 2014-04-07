@@ -1,4 +1,4 @@
-GLOBALS_HOME = /opt/intersystems/cache/2012.1.0U
+GLOBALS_HOME = /opt/intersystems/cache/2014.1.0
 
 CFLAGS = -Wall -Wextra -g
 CPPFLAGS = -I$(GLOBALS_HOME)/dev/cpp/include
