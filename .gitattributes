@@ -10,3 +10,5 @@
 *.html		diff text ident
 .project	diff text ident
 .classpath	diff text ident
+Makefile	diff text ident
+*.mk		diff text ident
