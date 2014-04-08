@@ -94,7 +94,7 @@
 <Method name="Main">
 <ClassMethod>1</ClassMethod>
 <Implementation><![CDATA[
-	#dim dir as %String = "/Users/ashcheglov/docs/programming/c/test-callout"
+	#dim dir as %String = "."
 	#dim bundle as %String = dir _ "/" _ "libtest-callout.bundle"
 	#dim dylib as %String = dir _ "/" _ "libtest-callout.dylib"
 
